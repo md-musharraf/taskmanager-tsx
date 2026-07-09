@@ -2,17 +2,19 @@ import "./App.css";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 
-const App = () => {
-  interface Todo {
-    id: string;
-    title: string;
-    isCompleted: boolean;
-  }
+interface Todo {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+}
 
+const App = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [title, setTitle] = useState("");
 
-  const submitHandler = () => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!title.trim()) return;
     const newTodo: Todo = {
       id: nanoid(),
       title: title,
@@ -20,9 +22,9 @@ const App = () => {
     };
 
     setTodos([...todos, newTodo]);
-  };
 
-  console.log(todos);
+    setTitle("");
+  };
 
   return (
     <div className="todo-page">
@@ -33,19 +35,23 @@ const App = () => {
           <p className="subtitle">Keep track of today&apos;s work with a clean, focused list.</p>
         </div>
 
-        <div className="input-box">
+        <form
+          onSubmit={submitHandler}
+          className="input-box"
+        >
           <input
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             type="text"
             placeholder="Enter your task"
           />
           <button
-            onClick={() => submitHandler()}
+            type="submit"
             aria-label="Add task"
           >
             +
           </button>
-        </div>
+        </form>
 
         <div
           className="stats-row"
@@ -68,62 +74,27 @@ const App = () => {
         <div className="line" />
 
         <div className="task-container">
-          <div className="task task-active">
-            <div className="task-left">
-              <input
-                type="checkbox"
-                className="checkbox"
-              />
-              <div>
-                <p className="task-title">Design the dashboard layout</p>
-                <p className="input-task">Polish spacing, cards, and visual hierarchy.</p>
+          {todos.map((todo) => (
+            <div
+              key={todo.id}
+              className="task task-active"
+            >
+              <div className="task-left">
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                />
+                <div>
+                  <p className="input-task">{todo.title}</p>
+                </div>
+              </div>
+
+              <div className="task-buttons">
+                <button className="edit">edit</button>
+                <button className="delete">delete</button>
               </div>
             </div>
-
-            <div className="task-buttons">
-              <button className="edit">edit</button>
-              <button className="delete">delete</button>
-            </div>
-          </div>
-
-          <div className="task">
-            <div className="task-left">
-              <input
-                type="checkbox"
-                className="checkbox"
-                defaultChecked
-              />
-              <div>
-                <p className="task-title done">Refine component spacing</p>
-                <p className="input-task done-text">
-                  Completed with tighter padding and smoother layout.
-                </p>
-              </div>
-            </div>
-
-            <div className="task-buttons">
-              <button className="edit">edit</button>
-              <button className="delete">delete</button>
-            </div>
-          </div>
-
-          <div className="task">
-            <div className="task-left">
-              <input
-                type="checkbox"
-                className="checkbox"
-              />
-              <div>
-                <p className="task-title">Add a finishing accent style</p>
-                <p className="input-task">Use subtle gradients and soft shadows for depth.</p>
-              </div>
-            </div>
-
-            <div className="task-buttons">
-              <button className="edit">edit</button>
-              <button className="delete">delete</button>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
