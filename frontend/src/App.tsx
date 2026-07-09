@@ -1,14 +1,29 @@
 import "./App.css";
 import { useState } from "react";
+import { nanoid } from "nanoid";
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
+  interface Todo {
+    id: string;
+    title: string;
+    isCompleted: boolean;
+  }
 
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [title, setTitle] = useState("");
 
+  const submitHandler = () => {
+    const newTodo: Todo = {
+      id: nanoid(),
+      title: title,
+      isCompleted: false,
+    };
 
+    setTodos([...todos, newTodo]);
+  };
 
+  console.log(todos);
 
-  
   return (
     <div className="todo-page">
       <div className="todo-card">
@@ -20,10 +35,16 @@ const App = () => {
 
         <div className="input-box">
           <input
+            onChange={(e) => setTitle(e.target.value)}
             type="text"
             placeholder="Enter your task"
           />
-          <button aria-label="Add task">+</button>
+          <button
+            onClick={() => submitHandler()}
+            aria-label="Add task"
+          >
+            +
+          </button>
         </div>
 
         <div
