@@ -26,6 +26,15 @@ const App = () => {
     setTitle("");
   };
 
+  const deleteHandler = (id: string) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
+  };
+
+  const editHandler = (todo: Todo) => {
+    console.log(todo);
+  };
+
   return (
     <div className="todo-page">
       <div className="todo-card">
@@ -89,9 +98,17 @@ const App = () => {
                 </div>
               </div>
 
-              <div className="task-buttons">
+              <div
+                onClick={() => editHandler(todo)}
+                className="task-buttons"
+              >
                 <button className="edit">edit</button>
-                <button className="delete">delete</button>
+                <button
+                  onClick={() => deleteHandler(todo.id)}
+                  className="delete"
+                >
+                  delete
+                </button>
               </div>
             </div>
           ))}
