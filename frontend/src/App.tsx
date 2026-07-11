@@ -1,5 +1,5 @@
 import "./App.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { nanoid } from "nanoid";
 
 interface Todo {
@@ -9,7 +9,6 @@ interface Todo {
 }
 
 const App = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [title, setTitle] = useState("");
 
@@ -23,7 +22,6 @@ const App = () => {
     };
 
     setTodos([...todos, newTodo]);
-
     setTitle("");
   };
 
@@ -58,7 +56,6 @@ const App = () => {
           className="input-box"
         >
           <input
-            ref={inputRef}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             type="text"
