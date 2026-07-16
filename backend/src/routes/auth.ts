@@ -1,5 +1,6 @@
 import authModel from "../models/auth.model";
 import { RegisterUser } from "./../types/types";
+import {LoginUser} from "./../types/types"
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -47,6 +48,6 @@ router.post("/auth/register-user", async (req: Request<{}, {}, RegisterUser>, re
   }
 });
 
-
+router.post("/auth/login-user", async(req:Request<{},{},>) );
 
 export default router;
