@@ -43,3 +43,38 @@ export const registerUserService = async (data: RegisterUser) => {
     user: safeUser,
   };
 };
+
+export const loginUserService = async (data: LoginUser) => {
+  const { email, password } = data;
+
+  const existingUser = await authModel.findOne({
+    email,
+  });
+
+  if (!existingUser) {
+    throw new Error("Email not found");
+  }
+
+  const verifyPassword = await bcrypt.compare(password, existingUser.password as string);
+
+  if (!verifyPassword) {
+    throw new Error("Password does not match");
+  }
+
+  const token = jwt.sign(
+    {
+      id: existingUser._id,
+    },
+    process.env.JWT_SECRET_KEY as string,
+    {
+      expiresIn: "7d",
+    },
+  );
+
+  const { password: _, ...user } = existingUser.toObject();
+
+  return {
+    token,
+    user,
+  };
+};
