@@ -1,4 +1,6 @@
 // import jwt from "jsonwebtoken";
-// import cookieParser from "cookie-parser";
 
-// export const authMiddleware =
+// const verifyUser = (req, res, next) => {
+//   const token = req.cookie?.token;
+//   console.log(token);
+// };
